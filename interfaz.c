@@ -138,7 +138,7 @@ void cliente(int shmid, int semid) {
 int main() {
     initscr();
 
-    key_t key = ftok("shmfile", 65);
+    key_t key = ftok("Archvivo",'k');
     int shmid = shmget(key, SHM_SIZE, 0666 | IPC_CREAT);
 
     if (shmid == -1) {
