@@ -15,7 +15,7 @@ typedef struct User {
 } User;
 
 int Crea_semaforo(key_t llave, int valor_inicial) {
-    int semid = semget(llave, 1, IPC_CREAT | IPC_EXCL | 0666); // Agrega IPC_EXCL
+    int semid = semget(llave, 1, IPC_CREAT | 0666);
     if (semid == -1) {
         return -1;
     }
@@ -53,7 +53,7 @@ void cliente(int shmid, int semid) {
         clrtobot();
 
         if (option == '1') {
-            down(semid); // Entrar a la sección crítica
+            down(semid);
             refresh();
             printw("Inicio de sesion\n\n Ingrese su nombre de usuario\n");
 
@@ -81,9 +81,9 @@ void cliente(int shmid, int semid) {
             } else {
                 printw("Error, intente otra vez. \n");
             }
-            up(semid); // Salir de la sección crítica
+            up(semid);
         } else if (option == '2') {
-            down(semid); // Entrar a la sección crítica
+            down(semid);
             refresh();
             printw("Registro de usuario\n\n Ingrese su nombre de usuario\n");
 
@@ -120,7 +120,7 @@ void cliente(int shmid, int semid) {
 
                 printw("Registro exitoso. \n");
             }
-            up(semid); // Salir de la sección crítica
+            up(semid);
         } else if (option != '3') {
             refresh();
             printw("Opción no válida. Intente nuevamente.\n");
@@ -157,7 +157,7 @@ int main() {
     cliente(shmid, semid);
 
     shmctl(shmid, IPC_RMID, NULL);
-    semctl(semid, 0, IPC_RMID); // Eliminar el semáforo
+    semctl(semid, 0, IPC_RMID); 
 
     endwin();
     return 0;
